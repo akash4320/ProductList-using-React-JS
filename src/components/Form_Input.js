@@ -94,10 +94,13 @@ class FormInput extends Component {
         Axios.post('./Product_List.json',{name,image,price,quantity,select,payment,city})
         .then(response=>{
             console.log(response);
+            window.location.reload();
         })
         .catch(error=>{
             console.log(error);
         })
+
+        
     }
 
 
