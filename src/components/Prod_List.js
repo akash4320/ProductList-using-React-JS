@@ -4,7 +4,7 @@ import './Prod_list.css'
 const ProdList = (props) => {
     const listOfProd = props.dataarray.map(appn => {
         return(
-            <div className = "card mb-1 mr-2">
+            <div className = "card mb-1 mr-2" key={appn.id}>
                 <div className = "figure">
                     <img className = "img-thumbnail" alt = {appn.name} src = {appn.image} height = "200px" width = "200px" style = {{float:"left",clear:"left",margin:"5px"}}/>
                         <Button className=" mr-1 close" 

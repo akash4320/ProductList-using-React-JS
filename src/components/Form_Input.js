@@ -9,54 +9,61 @@ import Button from './Button_type'
 import { Form } from 'reactstrap';
 import Axios from './Axios'
 
+import { connect } from 'react-redux';
+import { actions } from '../store';
 
 class FormInput extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            name: '',
-            image: '',
-            price: '',
-            quantity: '',
-            select: '',
-            payment: '',
-            city: []
-        }
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         name: '',
+    //         image: '',
+    //         price: '',
+    //         quantity: '',
+    //         select: '',
+    //         payment: '',
+    //         city: []
+    //     }
+    // }
 
     handle_event_name = (e) => {
-        // console.log("hyo");
-        this.setState({ name: e.target.value });
+        
+      //  this.setState({ name: e.target.value });
+        this.props.newName(e.target.value);
       //  console.log(this.state.name);
     }
     handle_event_image = (e) => {
-        // console.log("hyo");
-        this.setState({ image: e.target.value });
+      
+       // this.setState({ image: e.target.value });
+          this.props.newImage(e.target.value);
       //  console.log(this.state.image);
     }
 
     handle_event_price = (e) => {
-        // console.log("hyo");
-        this.setState({ price: e.target.value });
+        
+        //this.setState({ price: e.target.value });
+        this.props.newPrice(e.target.value);
       //  console.log(this.state.price);
     }
 
     handle_event_quantity = (e) => {
-        // console.log("hyo");
-        this.setState({ quantity: e.target.value });
-
+  
+       // this.setState({ quantity: e.target.value });
+          this.props.newQuantity(e.target.value);
       //  console.log(this.state.quantity);
     }
 
     handle_event_select = (e) => {
         
-        this.setState({ select: e.target.value });
+      //  this.setState({ select: e.target.value });
+          this.props.newSelect(e.target.value);
      //   console.log(this.state.select);
     }
 
     handle_event_radio = (e) => {
        
-        this.setState({ payment: e.target.id });
+       // this.setState({ payment: e.target.id });
+          this.props.newPayment(e.target.value);
        // console.log(this.state.payment);
     }
 
@@ -65,31 +72,31 @@ class FormInput extends Component {
         let item = e.target.id;
         let isChecked = e.target.checked;
         if (isChecked) {
-            this.state.city.push(item);
+            this.props.city.push(item);
             // console.log(item);
             // console.log(isChecked);
             // console.log(this.state.city);
         }
         else{
         // console.log(isChecked);
-        const index = this.state.city.indexOf(item);
-        this.state.city.splice(index, 1);
+        const index = this.props.city.indexOf(item);
+        this.props.city.splice(index, 1);
         // console.log(this.state.city);
        }
     }
     resetting = () => {
-        console.log(this.state.city);
+        console.log(this.props.city);
         document.getElementById("myForm").reset();
     }
 
     savedata=()=>{
-        const name=this.state.name;
-        const image=this.state.image;
-        const price=this.state.price;
-        const quantity=this.state.quantity;
-        const select=this.state.select;
-        const payment=this.state.payment;
-        const city=this.state.city;
+        const name=this.props.name;
+        const image=this.props.image;
+        const price=this.props.price;
+        const quantity=this.props.quantity;
+        const select=this.props.select;
+        const payment=this.props.payment;
+        const city=this.props.city;
 
         Axios.post('./Product_List.json',{name,image,price,quantity,select,payment,city})
         .then(response=>{
@@ -152,4 +159,43 @@ class FormInput extends Component {
     }
 }
 
-export default FormInput;
+function mapDispatchToProps(dispatch){
+    return{
+        newName(value){
+            dispatch(actions.dataName(value));
+        },
+        newImage(value){
+            dispatch(actions.dataImage(value));
+        },
+        newPrice(value){
+            dispatch(actions.dataPrice(value));
+        },
+        newQuantity(value){
+            dispatch(actions.dataQuantity(value));
+        },
+        newSelect(value){
+            dispatch(actions.dataSelect(value));
+        },
+        newPayment(value){
+            dispatch(actions.dataPayment(value));
+        },
+        newCity(value){
+            dispatch(actions.dataCity(value));
+        }
+    }
+  }
+  
+  function mapStateToProps(state){
+    return {
+            name:state.form.name,
+            image:state.form.image,
+            price:state.form.price,
+            quantity:state.form.quantity,
+            select:state.form.select,
+            payment:state.form.payment,
+            city:state.form.city
+    };
+  }
+
+export default connect(mapStateToProps,mapDispatchToProps)(FormInput);
+//export default FormInput;
